@@ -1,0 +1,5 @@
+argparse==1.4.0
+redis==4.3.4
+psycopg2==2.9.3
+aiorun==2022.4.1
+hl7==0.4.5

@@ -1,0 +1,47 @@
+version: '3.5'
+
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres:10-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-healthcare}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sushrut}
+      POSTGRES_DB: ${POSTGRES_DB:-healthcare}
+      PGDATA: /data/postgres
+      POSTGRES_HOST_AUTH_METHOD: md5
+    command: postgres -c 'config_file=/etc/postgresql/postgresql.conf'
+    volumes:
+       - postgres:/data/postgres
+       - ./sql/:/sql
+       - ./postgres.conf:/etc/postgresql/postgresql.conf
+       - ./pg_hba.conf:/data/pg_hba.conf
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+  
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-sushrut}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - pgadmin:/var/lib/pgadmin
+
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+    postgres:
+    pgadmin:

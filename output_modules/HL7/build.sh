@@ -1,0 +1,1 @@
+docker build -t healthcare-workflow/hl7-sender .

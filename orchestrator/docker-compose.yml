@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  orchestrator:
+    image: healthcare-workflow/orchestrator
+    restart: on-failure
+    ports:
+      - '12345:12345'
+      - '12344:12344'
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_USER: ${POSTGRES_USER:-healthcare-workflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sushrut}
+      POSTGRES_DB: ${POSTGRES_DB:-healthcare}
+      POSTGRES_PORT: 5432
+      ORCHESTRATOR_HOST: 127.0.0.1
+      ORCHESTRATOR_PORT: 12345
+      REDIS_HOST:  ${REDIS_HOST}
+      REDIS_PORT: 6379
+    volumes: 
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /mnt/c/workspace/keys/docker/cert.pem:/docker/cert.pem
+volumes:
+  channels:
+    driver: local
