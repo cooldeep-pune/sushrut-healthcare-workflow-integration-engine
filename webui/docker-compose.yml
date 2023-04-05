@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  healthcare-workflow-webui:
+    container_name: webui_container
+    image: healthcare-workflow/webui
+    restart: always
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_USER: ${POSTGRES_USER:-healthcare-workflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-annaai}
+      POSTGRES_DB: ${POSTGRES_DB:-healthcare}
+      POSTGRES_PORT: 5432
+    ports:
+      - '8080:80'
+volumes:
+  cache:
+    driver: local

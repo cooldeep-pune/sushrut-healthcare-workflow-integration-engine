@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  cli:
+    image: healthcare-workflow/cli
+    restart: on-failure
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_USER: ${POSTGRES_USER:-healthcare-workflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sushrut}
+      POSTGRES_DB: ${POSTGRES_DB:-healthcare}
+      POSTGRES_PORT: 5432
+      ORCHESTRATOR_HOST: ${ORCHESTRATOR_HOST}
+      ORCHESTRATOR_PORT: 12345
+    volumes: 
+      - ../channels:/channels
+volumes:
+  channels:
+    driver: local
