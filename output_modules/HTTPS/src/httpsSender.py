@@ -10,8 +10,9 @@ from redis import Redis
 from functools import partial
 import requests
 import os
-import http, urllib
+import http.client
 from urllib.parse import urlparse
+import ssl
 
 REDIS_CLIENT = Redis(host=os.environ['REDIS_HOST'], port=int(os.environ['REDIS_PORT']), db=0)
 
@@ -73,7 +74,11 @@ def run_sender():
             print(msg)
             headers = {'Content-Type': 'application/json'}   
             posturl = urlparse(url)
-            conn = http.client.HTTPSConnection(posturl.hostname,posturl.port,key_file='/opt/certs/client-key.pem', cert_file='/opt/certs/client-cert.pem')
+            context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+            context.verify_mode = ssl.CERT_REQUIRED
+            context.load_cert_chain('/opt/certs/client-cert.pem','/opt/certs/client-key.pem')
+            context.load_verify_locations('/opt/certs/ca-cert.pem')     
+            conn = http.client.HTTPSConnection(posturl.hostname,posturl.port,context=context)
             print("connected")
             conn.request("POST", "",msg, headers)
             response = conn.getresponse()

@@ -9,9 +9,9 @@ import json
 from redis import Redis
 from functools import partial
 import os
-import http, urllib
-import requests
-
+import http.client
+from urllib.parse import urlparse
+import ssl
 def run_sender():
 
     parser = argparse.ArgumentParser(description = "Integration engine!")
@@ -33,9 +33,10 @@ def run_sender():
         request_headers = {'Content-Type': 'application/json'}   
         posturl = urlparse(url)
         # Define the client certificate settings for https connection
-        context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        context.load_cert_chain(certfile='/opt/certs/client-cert.pem', password='Sushrut@123')
-         
+        context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+        context.verify_mode = ssl.CERT_REQUIRED
+        context.load_cert_chain('/opt/certs/client-cert.pem','/opt/certs/client-key.pem')
+        context.load_verify_locations('/opt/certs/ca-cert.pem')        
         # Create a connection to submit HTTP requests
         connection = http.client.HTTPSConnection(posturl.hostname, port=posturl.port, context=context)
          
