@@ -22,11 +22,13 @@ cd ./input_modules/HTTP
 bash build.sh
 cd ../..
 
+cd ./input_modules/HTTPS
+bash build.sh
+cd ../..
 
 cd ./input_modules/IOStream
 bash build.sh
 cd ../..
-
 
 cd ./output_modules/DICOM
 bash build.sh
@@ -40,6 +42,9 @@ cd ./output_modules/HTTP
 bash build.sh
 cd ../..
 
+cd ./output_modules/HTTPS
+bash build.sh
+cd ../..
 
 cd ./output_modules/IOStream
 bash build.sh
