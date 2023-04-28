@@ -30,7 +30,6 @@ cd ./input_modules/IOStream
 bash build.sh
 cd ../..
 
-
 cd ./output_modules/DICOM
 bash build.sh
 cd ../..
