@@ -72,7 +72,7 @@ def run_sender():
         print(f'data size in loop: {len((msg))}')
         try:
             print(msg)
-            headers = {'Content-Type': 'application/json'}   
+            request_headers = {'Content-Type': 'application/json'}   
             posturl = urlparse(url)
             context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
             context.verify_mode = ssl.CERT_REQUIRED
@@ -80,11 +80,9 @@ def run_sender():
             context.load_verify_locations('/opt/certs/ca-cert.pem')     
             conn = http.client.HTTPSConnection(posturl.hostname,posturl.port,context=context)
             print("connected")
-            conn.request("POST", "",msg, headers)
+            conn.request(method="POST", url=url, headers=request_headers, body=msg)
             response = conn.getresponse()
             print(response.status, response.reason)
-            print(r.status_code)
-
         except Exception as exc:
             print(f"Store failed")
             print(exc)
