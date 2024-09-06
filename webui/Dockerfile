@@ -1,6 +1,7 @@
-FROM php:7.0-apache
+FROM php:7.0.33-apache
+#COPY config/php.ini /usr/local/etc/php/
 
-RUN apt-get update && apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql pgsql
+RUN docker-php-ext-install mysqli && docker-php-ext-install pdo_mysql
  
 # Install Composer
 # RUN curl -k -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
